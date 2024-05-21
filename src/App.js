@@ -10,7 +10,7 @@ function App() {
   // Function to fetch data using Axios
   const fetchData = async () => {
     try {
-      const response = await axios.get("/navitas");
+      const response = await axios.get(process.env.REACT_APP_API_URL + "/navitas");
       console.log(response);
       setData(response.data);
     } catch (error) {
