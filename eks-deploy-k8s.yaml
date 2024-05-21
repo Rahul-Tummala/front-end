@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: navitas-frontend
+  name: navitas-frontend
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: navitas-frontend
+  template:
+    metadata:
+      labels:
+        app: navitas-frontend
+    spec:
+      containers:
+        - name: my-navitas-frontend
+          image: 891377337960.dkr.ecr.us-east-1.amazonaws.com/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+---
+# service type loadbalancer
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: navitas-frontend
+    k8s-app: navitas-frontend
+  name: navitas-frontend
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+  type: LoadBalancer
+  selector:
+    app: navitas-frontend

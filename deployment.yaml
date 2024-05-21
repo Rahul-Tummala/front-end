@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: navitas-frontend
+  name: navitas-frontend
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: navitas-frontend
+  template:
+    metadata:
+      labels:
+        app: navitas-frontend
+    spec:
+      containers:
+        - name: my-navitas-frontend
+          image: 891377337960.dkr.ecr.us-east-1.amazonaws.com/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: navitas-frontend-storage
+              mountPath: /app/data # Path inside the container where the volume will be mounted
+      volumes:
+        - name: navitas-frontend-storage
+          persistentVolumeClaim:
+            claimName: navitas-frontend-pvc
